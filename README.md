@@ -12,6 +12,7 @@ division-by-zero error handling
 clear and backspace buttons (dont believe that computer keyboards wont work for this, so you gotta use the touchpad or mouse to press the buttons)
 calc keyboard input (not talking about the computer/laptop keyboard functioning for the buttons)
 dark-themed UI
+calculation history
 
 ## tech used
 Java - calculation engine
@@ -34,6 +35,7 @@ CalculatorWindow.kt - calculator interface and interaction logic
 
 ## project status
 version 1.0 - initial dev release
+version 1.1 - calculation history
 
 ## developer
 created as a java/kotlin learning and portfolio project.
