@@ -15,6 +15,7 @@ import org.example.calculator.CalculatorEngine
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Insets
+import javax.swing.JOptionPane
 
 class CalculatorWindow {
 
@@ -57,6 +58,39 @@ class CalculatorWindow {
             var pendingOperator: String? = null
             var startNewNumber = true
             var errorState = false
+
+            val calculationHistory = mutableListOf<String>()
+
+            // History button goes here
+            val historyButton = JButton("History")
+
+            historyButton.addActionListener {
+                val historyText = if (calculationHistory.isEmpty()) {
+                    "No calculations yet."
+                } else {
+                    calculationHistory.joinToString("\n")
+                }
+
+                JOptionPane.showMessageDialog(
+                    frame,
+                    historyText,
+                    "Calculation History",
+                    JOptionPane.INFORMATION_MESSAGE
+                )
+            }
+
+            val clearHistoryButton = JButton("Clear History")
+
+            clearHistoryButton.addActionListener {
+                calculationHistory.clear()
+
+                JOptionPane.showMessageDialog(
+                    frame,
+                    "Calculation history cleared.",
+                    "Clear History",
+                    JOptionPane.INFORMATION_MESSAGE
+                )
+            }
 
             fun clear() {
                 display.text = "0"
@@ -103,6 +137,9 @@ class CalculatorWindow {
                     }
 
                     display.text = formatResult(result)
+                    calculationHistory.add(
+                        "${formatResult(firstOperand)} $operation ${formatResult(secondOperand)} = ${formatResult(result)}"
+                    )
                 } catch (e: ArithmeticException) {
                     display.text = "Error"
                     errorState = true
@@ -179,7 +216,17 @@ class CalculatorWindow {
                 buttonPanel.add(button)
             }
 
+            val historyPanel = JPanel(GridLayout(1, 2, 5, 5))
+
+            historyPanel.add(historyButton)
+            historyPanel.add(clearHistoryButton)
+
+            historyPanel.background = Color(30, 30, 30)
+            historyPanel.border = javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5)
+
             frame.add(buttonPanel, BorderLayout.CENTER)
+
+            frame.add(historyPanel, BorderLayout.SOUTH)
 
             frame.addKeyListener(object : KeyAdapter() {
                 override fun keyPressed(e: KeyEvent) {
